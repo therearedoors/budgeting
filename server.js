@@ -13,7 +13,7 @@ const typesRoutes = require('./routes/types');
 const { formatGBP, formatDate, displayDate } = require('./utils/format');
 
 const app = express();
-const PORT = process.env.PORT || '0.0.0.0';
+const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view cache', false);
@@ -42,5 +42,4 @@ app.use((req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-});
+app.listen(PORT, '0.0.0.0');
