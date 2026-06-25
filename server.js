@@ -12,6 +12,11 @@ const outgoingRoutes = require('./routes/outgoing');
 const typesRoutes = require('./routes/types');
 const { formatGBP, formatDate, displayDate } = require('./utils/format');
 
+console.log('Starting app', {
+  port: process.env.PORT,
+  nodeEnv: process.env.NODE_ENV
+});
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.set('view engine', 'ejs');
