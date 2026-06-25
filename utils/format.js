@@ -16,11 +16,16 @@ function formatDate(date) {
   return `${year}-${month}-${day}`;
 }
 
+const MONTHS = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+];
+
 function displayDate(date) {
   const iso = formatDate(date);
   if (!iso) return '';
   const [year, month, day] = iso.split('-');
-  return `${day}/${month}/${year}`;
+  return `${MONTHS[Number(month) - 1]} ${Number(day)} ${year}`;
 }
 
 module.exports = { formatGBP, formatDate, displayDate };
