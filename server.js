@@ -30,6 +30,11 @@ app.locals.editing = null;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/health', (req, res) => {
+  res.sendStatus(200);
+});
+
 app.use(cookieParser());
 app.use(loadUser);
 app.use(flashMiddleware);
