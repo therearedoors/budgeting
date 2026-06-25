@@ -31,7 +31,7 @@ function redirectIfAuth(req, res, next) {
 
   try {
     jwt.verify(token, process.env.JWT_SECRET);
-    return res.redirect('/dashboard');
+    return res.redirect('/');
   } catch {
     res.clearCookie('token');
     next();

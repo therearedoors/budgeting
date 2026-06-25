@@ -66,7 +66,7 @@ router.post('/register', redirectIfAuth, registerValidation, async (req, res) =>
     );
 
     setTokenCookie(res, { id: result.insertId, email });
-    res.redirect('/dashboard?success=Account created');
+    res.redirect('/?success=Account created');
   } catch (err) {
     console.error(err);
     res.status(500).render('auth/register', {
@@ -114,7 +114,7 @@ router.post('/login', redirectIfAuth, loginValidation, async (req, res) => {
     }
 
     setTokenCookie(res, user);
-    res.redirect('/dashboard');
+    res.redirect('/');
   } catch (err) {
     console.error(err);
     res.status(500).render('auth/login', {
