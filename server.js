@@ -43,5 +43,4 @@ app.use((req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Budgeting app running at http://localhost:${PORT}`);
 });
