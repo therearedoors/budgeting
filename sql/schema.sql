@@ -1,0 +1,51 @@
+CREATE DATABASE IF NOT EXISTS budgeting;
+USE budgeting;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(255) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS incoming_types (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_incoming_type (user_id, name)
+);
+
+CREATE TABLE IF NOT EXISTS outgoing_types (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_outgoing_type (user_id, name)
+);
+
+CREATE TABLE IF NOT EXISTS user_incoming (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  type_id INT NOT NULL,
+  amount DECIMAL(10, 2) NOT NULL,
+  description VARCHAR(500),
+  entry_date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (type_id) REFERENCES incoming_types(id) ON DELETE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS user_outgoing (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  type_id INT NOT NULL,
+  amount DECIMAL(10, 2) NOT NULL,
+  description VARCHAR(500),
+  entry_date DATE NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (type_id) REFERENCES outgoing_types(id) ON DELETE RESTRICT
+);

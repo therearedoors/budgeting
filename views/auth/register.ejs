@@ -1,0 +1,37 @@
+<%- include('../partials/head', { title }) %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="container auth-container">
+  <section class="card auth-card">
+    <h1>Register</h1>
+    <p class="subtitle">Create your personal budgeting account.</p>
+
+    <% if (errors && errors.length) { %>
+      <div class="alert alert-error">
+        <ul>
+          <% errors.forEach(function(err) { %>
+            <li><%= err.msg %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+    <form method="POST" action="/register" class="form">
+      <label>
+        Email
+        <input type="email" name="email" value="<%= typeof email !== 'undefined' ? email : '' %>" required autofocus>
+      </label>
+      <label>
+        Password
+        <input type="password" name="password" minlength="8" required>
+        <span class="hint">At least 8 characters</span>
+      </label>
+      <button type="submit" class="btn btn-primary">Create account</button>
+    </form>
+
+    <p class="auth-switch">Already have an account? <a href="/login">Login</a></p>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>

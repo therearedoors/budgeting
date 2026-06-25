@@ -1,0 +1,103 @@
+<%- include('../partials/head', { title }) %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+<%
+  const editingEntry = typeof editing !== 'undefined' ? editing : null;
+  const formValues = typeof form !== 'undefined' ? form : null;
+%>
+
+<main class="container">
+  <h1>Outgoings</h1>
+
+  <section class="card">
+    <h2><%= editingEntry ? 'Edit outgoing' : 'Add outgoing' %></h2>
+
+    <% if (errors && errors.length) { %>
+      <div class="alert alert-error">
+        <ul>
+          <% errors.forEach(function(err) { %>
+            <li><%= err.msg %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+    <% if (types.length === 0) { %>
+      <p class="empty">You need at least one outgoing type. <a href="/types">Create types</a> first.</p>
+    <% } else { %>
+      <form method="POST" action="<%= editingEntry ? '/outgoing/' + editingEntry.id : '/outgoing' %>" class="form form-grid">
+        <label>
+          Type
+          <select name="type_id" required>
+            <option value="">Select type</option>
+            <% types.forEach(function(type) { %>
+              <option value="<%= type.id %>"
+                <%= (editingEntry && editingEntry.type_id == type.id) || (formValues && formValues.type_id == type.id) ? 'selected' : '' %>>
+                <%= type.name %>
+              </option>
+            <% }) %>
+          </select>
+        </label>
+        <label>
+          Amount (£)
+          <input type="number" name="amount" step="0.01" min="0.01" required
+            value="<%= editingEntry ? editingEntry.amount : (formValues ? formValues.amount : '') %>">
+        </label>
+        <label>
+          Date
+          <input type="date" name="entry_date" required
+            value="<%= editingEntry ? formatDate(editingEntry.entry_date) : (formValues ? formValues.entry_date : formatDate(new Date())) %>">
+        </label>
+        <label class="full-width">
+          Description (optional)
+          <input type="text" name="description" maxlength="500"
+            value="<%= editingEntry ? (editingEntry.description || '') : (formValues ? (formValues.description || '') : '') %>">
+        </label>
+        <div class="form-actions full-width">
+          <button type="submit" class="btn btn-primary"><%= editingEntry ? 'Update' : 'Add' %> outgoing</button>
+          <% if (editingEntry) { %>
+            <a href="/outgoing" class="btn btn-ghost">Cancel</a>
+          <% } %>
+        </div>
+      </form>
+    <% } %>
+  </section>
+
+  <section class="card">
+    <h2>All outgoings</h2>
+
+    <% if (entries.length === 0) { %>
+      <p class="empty">No outgoings recorded yet.</p>
+    <% } else { %>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th class="amount-col">Amount</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% entries.forEach(function(entry) { %>
+            <tr>
+              <td><%= displayDate(entry.entry_date) %></td>
+              <td><%= entry.type_name %></td>
+              <td><%= entry.description || '—' %></td>
+              <td class="amount-col outgoing">−<%= formatGBP(entry.amount).replace('£', '') %></td>
+              <td class="actions">
+                <a href="/outgoing/<%= entry.id %>/edit" class="btn btn-sm btn-ghost">Edit</a>
+                <form method="POST" action="/outgoing/<%= entry.id %>/delete" class="inline-form">
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this outgoing?')">Delete</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </section>
+</main>
+
+<%- include('../partials/footer') %>

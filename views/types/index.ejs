@@ -1,0 +1,68 @@
+<%- include('../partials/head', { title }) %>
+<%- include('../partials/nav') %>
+<%- include('../partials/flash') %>
+
+<main class="container">
+  <h1>Types</h1>
+  <p class="subtitle">Create custom categories for your incomings and outgoings.</p>
+
+  <% if (errors && errors.length) { %>
+    <div class="alert alert-error">
+      <ul>
+        <% errors.forEach(function(err) { %>
+          <li><%= err.msg %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <div class="two-col">
+    <section class="card">
+      <h2>Incoming types</h2>
+      <form method="POST" action="/types/incoming" class="form inline-add">
+        <input type="text" name="name" placeholder="e.g. Salary" required maxlength="100">
+        <button type="submit" class="btn btn-primary btn-sm">Add</button>
+      </form>
+
+      <% if (incomingTypes.length === 0) { %>
+        <p class="empty">No incoming types yet.</p>
+      <% } else { %>
+        <ul class="type-list">
+          <% incomingTypes.forEach(function(type) { %>
+            <li>
+              <span><%= type.name %></span>
+              <form method="POST" action="/types/incoming/<%= type.id %>/delete" class="inline-form">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this incoming type?')">Delete</button>
+              </form>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </section>
+
+    <section class="card">
+      <h2>Outgoing types</h2>
+      <form method="POST" action="/types/outgoing" class="form inline-add">
+        <input type="text" name="name" placeholder="e.g. Rent" required maxlength="100">
+        <button type="submit" class="btn btn-primary btn-sm">Add</button>
+      </form>
+
+      <% if (outgoingTypes.length === 0) { %>
+        <p class="empty">No outgoing types yet.</p>
+      <% } else { %>
+        <ul class="type-list">
+          <% outgoingTypes.forEach(function(type) { %>
+            <li>
+              <span><%= type.name %></span>
+              <form method="POST" action="/types/outgoing/<%= type.id %>/delete" class="inline-form">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this outgoing type?')">Delete</button>
+              </form>
+            </li>
+          <% }) %>
+        </ul>
+      <% } %>
+    </section>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>

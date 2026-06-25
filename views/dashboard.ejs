@@ -1,0 +1,65 @@
+<%- include('partials/head', { title }) %>
+<%- include('partials/nav') %>
+<%- include('partials/flash') %>
+
+<main class="container">
+  <h1>Dashboard</h1>
+
+  <section class="summary-grid">
+    <article class="card summary-card incoming">
+      <h2>Total incomings</h2>
+      <p class="amount"><%= formatGBP(totalIncomings) %></p>
+    </article>
+    <article class="card summary-card outgoing">
+      <h2>Total outgoings</h2>
+      <p class="amount"><%= formatGBP(totalOutgoings) %></p>
+    </article>
+    <article class="card summary-card balance <%= balance >= 0 ? 'positive' : 'negative' %>">
+      <h2>Balance</h2>
+      <p class="amount"><%= formatGBP(balance) %></p>
+    </article>
+  </section>
+
+  <section class="card">
+    <div class="section-header">
+      <h2>Recent activity</h2>
+      <div class="quick-links">
+        <a href="/incoming" class="btn btn-sm">Add incoming</a>
+        <a href="/outgoing" class="btn btn-sm">Add outgoing</a>
+      </div>
+    </div>
+
+    <% if (recent.length === 0) { %>
+      <p class="empty">No entries yet. <a href="/types">Create types</a> first, then add incomings or outgoings.</p>
+    <% } else { %>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Kind</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th class="amount-col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recent.forEach(function(entry) { %>
+            <tr>
+              <td><%= displayDate(entry.entry_date) %></td>
+              <td>
+                <span class="badge <%= entry.kind %>"><%= entry.kind === 'incoming' ? 'Incoming' : 'Outgoing' %></span>
+              </td>
+              <td><%= entry.type_name %></td>
+              <td><%= entry.description || '—' %></td>
+              <td class="amount-col <%= entry.kind %>">
+                <%= entry.kind === 'incoming' ? '+' : '−' %><%= formatGBP(entry.amount).replace('£', '') %>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    <% } %>
+  </section>
+</main>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,19 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo">Budgeting</a>
+    <% if (user) { %>
+      <nav class="nav">
+        <a href="/">Dashboard</a>
+        <a href="/incoming">Incomings</a>
+        <a href="/outgoing">Outgoings</a>
+        <a href="/types">Types</a>
+      </nav>
+      <div class="header-actions">
+        <span class="user-email"><%= user.email %></span>
+        <form action="/logout" method="POST" class="inline-form">
+          <button type="submit" class="btn btn-ghost">Logout</button>
+        </form>
+      </div>
+    <% } %>
+  </div>
+</header>

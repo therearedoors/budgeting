@@ -1,0 +1,17 @@
+<%- include('partials/head', { title }) %>
+<%- include('partials/nav') %>
+<%- include('partials/flash') %>
+
+<main class="container">
+  <section class="card">
+    <h1><%= title %></h1>
+    <p><%= message %></p>
+    <% if (user) { %>
+      <a href="/" class="btn">Back to dashboard</a>
+    <% } else { %>
+      <a href="/login" class="btn">Go to login</a>
+    <% } %>
+  </section>
+</main>
+
+<%- include('partials/footer') %>
